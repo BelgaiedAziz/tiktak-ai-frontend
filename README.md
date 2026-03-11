@@ -52,12 +52,12 @@ L'application est disponible sur [http://localhost:3000](http://localhost:3000).
 
 Le fichier `.env` contient les valeurs par défaut pour un environnement local :
 
-| Variable | Description | Défaut |
-|---|---|---|
-| `REACT_APP_CRM_API_URL` | URL de base de l'API CRM | `http://localhost/api/v1/crm` |
-| `REACT_APP_META_API_URL` | URL du gateway Messenger POC | `http://localhost/api/v1/gateway/messenger/poc` |
-| `REACT_APP_SHOP_ID` | Identifiant de la boutique | `1LXybpj` |
-| `REACT_APP_NAME` | Nom affiché de l'application | `TikTak AI` |
+| Variable | Description |
+|---|---|
+| `REACT_APP_CRM_API_URL` | URL de base de l'API CRM |
+| `REACT_APP_META_API_URL` | URL du gateway Messenger POC |
+| `REACT_APP_SHOP_ID` | Identifiant de la boutique |
+| `REACT_APP_NAME` | Nom affiché de l'application |
 
 > Pour des surcharges locales, créer un fichier `.env.local` (ignoré par git).
 
