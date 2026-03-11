@@ -1,33 +1,155 @@
-# Getting Started with Create React App
+# TikTak AI — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Interface d'administration pour la plateforme **TikTak AI**, un assistant e-commerce basé sur l'IA conversationnelle. Elle permet de gérer les conversations clients, les leads, et de piloter les messages envoyés via les canaux Meta (WhatsApp / Messenger / Instagram).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Stack technique
 
-### `npm start`
+| Outil | Version |
+|---|---|
+| React | 19 |
+| React Router | 7 |
+| TanStack Query | 5 |
+| Axios | 1 |
+| Tailwind CSS | 3 |
+| Recharts | 3 |
+| Lucide React | 0.577 |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Prérequis
 
-### `npm test`
+- **Node.js** ≥ 18
+- **npm** ≥ 9
+- Backend TikTak AI en cours d'exécution sur `http://localhost`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# 1. Cloner le dépôt
+git clone <url-du-repo>
+cd tiktak-ai-frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# 2. Installer les dépendances
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 3. Configurer les variables d'environnement
+cp .env .env.local
+# Éditer .env.local si nécessaire (voir section Variables d'environnement)
+
+# 4. Lancer en développement
+npm start
+```
+
+L'application est disponible sur [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Variables d'environnement
+
+Le fichier `.env` contient les valeurs par défaut pour un environnement local :
+
+| Variable | Description | Défaut |
+|---|---|---|
+| `REACT_APP_CRM_API_URL` | URL de base de l'API CRM | `http://localhost/api/v1/crm` |
+| `REACT_APP_META_API_URL` | URL du gateway Messenger POC | `http://localhost/api/v1/gateway/messenger/poc` |
+| `REACT_APP_SHOP_ID` | Identifiant de la boutique | `1LXybpj` |
+| `REACT_APP_NAME` | Nom affiché de l'application | `TikTak AI` |
+
+> Pour des surcharges locales, créer un fichier `.env.local` (ignoré par git).
+
+---
+
+## Scripts disponibles
+
+| Commande | Description |
+|---|---|
+| `npm start` | Lance le serveur de développement (port 3000) |
+| `npm run build` | Build de production dans `build/` |
+| `npm test` | Lance les tests unitaires |
+
+---
+
+## Structure du projet
+
+```
+src/
+├── api/               # Clients HTTP Axios
+│   ├── crmApi.js      # Conversations, messages (CRM)
+│   ├── leadsApi.js    # CRUD Leads
+│   └── metaApi.js     # Envoi de messages via gateway Messenger
+│
+├── components/
+│   ├── admin/         # Composants spécifiques à l'administration
+│   └── layout/        # Sidebar + Navbar (layout global)
+│
+├── context/           # Contextes React globaux
+├── hooks/             # Hooks métier (chat, vision, interventions)
+│
+├── pages/
+│   ├── Dashboard/         # Tableau de bord principal
+│   ├── Messages/          # AdminMessages — liste des conversations + bulles
+│   ├── Leads/             # Gestion CRM des leads (tableau CRUD)
+│   ├── Inbox/             # Boîte de réception (filtres par canal)
+│   ├── ClientChat/        # Interface chat côté client (sans sidebar)
+│   └── TestMetaSender/    # Outil de test Messenger (thème Messenger)
+│
+└── utils/             # Utilitaires (formatters, etc.)
+```
+
+---
+
+## Routes
+
+| URL | Page | Description |
+|---|---|---|
+| `/` | Dashboard | Vue d'ensemble & métriques |
+| `/messages` | AdminMessages | Gestion des conversations IA |
+| `/leads` | Leads | CRM — tableau des leads |
+| `/inbox` | Inbox | Boîte de réception multi-canal |
+| `/chat` | ClientChat | Interface client (sans layout admin) |
+| `/test-sender` | TestMetaSender | Outil de test — envoi de messages Messenger |
+
+---
+
+## Fonctionnalités principales
+
+### AdminMessages
+- Liste des conversations filtrées par `shop_id`
+- Bulles de messages avec **pills d'intent** (colorées par type d'intention IA)
+- Affichage des images (URL blob) ou icône placeholder si image absente
+- Déduplication des messages (même expéditeur, même texte consécutif)
+
+### Leads
+- Tableau paginé des leads issus des conversations
+- Modales de création, édition et suppression
+
+### TestMetaSender
+- Interface de type **Messenger** (thème clair Facebook)
+- Envoi de messages texte ou avec image
+- Debug panel avec état de la requête API
+
+---
+
+## Git
+
+Branche de travail : `feature/admin-messages-ui`
+
+```
+feat: add AdminMessages page, Leads CRUD, APIs
+feat: restructure layout (sidebar z-30, navbar z-20)
+chore: remove unused files
+```
+
+---
+
+## Licence
+
+Projet privé — © TikTak AI 2025
+
 
 ### `npm run eject`
 
