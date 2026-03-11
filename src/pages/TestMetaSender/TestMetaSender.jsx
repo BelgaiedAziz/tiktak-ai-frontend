@@ -2,33 +2,36 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, Loader, Search, ArrowRight, ChevronRight, ChevronLeft, X, MoreVertical, Phone, Video } from 'lucide-react';
 import { sendPocMessage } from '../../api/metaApi';
 
-const PAGE_NAME = 'Aura Boutique';
+const PAGE_NAME = 'Iconic Store';
 const SHOP_ID = '1LXybpj';
 const PAGE_AVATAR = 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=150&q=80';
 
-// WhatsApp color palette
+// Messenger color palette
 const WA = {
-    headerBg: '#202C33',
-    sidebarBg: '#111B21',
-    sidebarItem: '#202C33',
-    chatBg: '#0B141A',
-    sentBubble: '#005C4B',
-    recvBubble: '#202C33',
-    inputBg: '#2A3942',
-    inputBar: '#1F2C34',
-    green: '#00A884',
-    greenLight: '#25D366',
-    textPrimary: '#E9EDEF',
-    textSecond: '#8696A0',
-    border: '#2A3942',
-    searchBg: '#2A3942',
+    headerBg: '#FFFFFF',
+    sidebarBg: '#FFFFFF',
+    sidebarItem: '#F0F2F5',
+    chatBg: '#FFFFFF',
+    sentBubble: '#0084FF',
+    recvBubble: '#F0F2F5',
+    inputBg: '#F0F2F5',
+    inputBar: '#FFFFFF',
+    green: '#0084FF',
+    greenLight: '#0084FF',
+    textPrimary: '#050505',
+    textSecond: '#65676B',
+    border: '#E4E6EB',
+    searchBg: '#F0F2F5',
 };
 
+// Rename palette to M for Messenger
+const M = WA;
+
 const STATE_META = {
-    NEW_CONVERSATION: { label: 'NEW', color: 'bg-gray-700 text-gray-300' },
-    WAITING_USER_REPLY: { label: 'WAITING REPLY', color: 'bg-yellow-900 text-yellow-300' },
-    WAITING_DISAMBIGUATION: { label: 'DISAMBIGUATION', color: 'bg-orange-900 text-orange-300' },
-    COMPLETED: { label: 'COMPLETED', color: 'bg-green-900 text-green-300' },
+    NEW_CONVERSATION:       { label: 'NEW',            color: 'bg-gray-100 text-gray-600'     },
+    WAITING_USER_REPLY:     { label: 'WAITING REPLY',  color: 'bg-yellow-100 text-yellow-700' },
+    WAITING_DISAMBIGUATION: { label: 'DISAMBIGUATION', color: 'bg-orange-100 text-orange-700' },
+    COMPLETED:              { label: 'COMPLETED',      color: 'bg-green-100 text-green-700'   },
 };
 
 /* ─────────────────────────── Debug Panel ─────────────────────────── */
@@ -47,9 +50,10 @@ const DebugPanel = ({ debug, onClose }) => {
     const prevInfo = STATE_META[previous_state] || { label: previous_state, color: 'bg-gray-700 text-gray-300' };
 
     return (
-        <aside className="w-[300px] flex-shrink-0 flex flex-col overflow-hidden" style={{ backgroundColor: WA.sidebarBg, borderLeft: `1px solid ${WA.border}` }}>
+        <aside className="w-[300px] flex-shrink-0 flex flex-col overflow-hidden"
+            style={{ backgroundColor: WA.sidebarBg, borderLeft: `1px solid ${WA.border}` }}>
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: WA.headerBg, borderBottom: `1px solid ${WA.border}` }}>
+            <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: `1px solid ${WA.border}` }}>
                 <h2 className="text-xs font-bold uppercase tracking-wider" style={{ color: WA.textSecond }}>Debug Interne</h2>
                 <button onClick={onClose} className="p-1 rounded-full transition-colors hover:opacity-70">
                     <X className="w-4 h-4" style={{ color: WA.textSecond }} />
@@ -71,7 +75,7 @@ const DebugPanel = ({ debug, onClose }) => {
                 {/* Intent */}
                 <div>
                     <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: WA.textSecond }}>Intent détecté</p>
-                    <span className="px-2.5 py-1 rounded-md font-semibold bg-purple-900 text-purple-300">
+                    <span className="px-2.5 py-1 rounded-md font-semibold bg-purple-100 text-purple-700">
                         {intent_detected || '—'}
                     </span>
                 </div>
@@ -83,7 +87,7 @@ const DebugPanel = ({ debug, onClose }) => {
                         <div className="flex flex-wrap gap-1.5">
                             {Object.entries(entities_extracted).map(([k, v]) => (
                                 <span key={k} className="px-2 py-1 rounded-md font-medium" style={{ backgroundColor: WA.searchBg, color: WA.textPrimary }}>
-                                    <span style={{ color: WA.green }}>{k}:</span> {v}
+                                    <span style={{ color: '#0084FF' }}>{k}:</span> {v}
                                 </span>
                             ))}
                         </div>
@@ -96,7 +100,7 @@ const DebugPanel = ({ debug, onClose }) => {
                         <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: WA.textSecond }}>Entités manquantes</p>
                         <div className="flex flex-wrap gap-1.5">
                             {missing_entities.map((e) => (
-                                <span key={e} className="px-2 py-1 rounded-md font-medium bg-red-900 text-red-300 border border-red-800">{e}</span>
+                                <span key={e} className="px-2 py-1 rounded-md font-medium bg-red-100 text-red-700 border border-red-200">{e}</span>
                             ))}
                         </div>
                     </div>
@@ -126,65 +130,64 @@ const DebugPanel = ({ debug, onClose }) => {
 const ConversationItem = ({ isSelected, onClick }) => (
     <button
         onClick={onClick}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all"
+        className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all"
         style={{ backgroundColor: isSelected ? WA.sidebarItem : 'transparent' }}
-        onMouseEnter={e => { if (!isSelected) e.currentTarget.style.backgroundColor = '#2A3942'; }}
+        onMouseEnter={e => { if (!isSelected) e.currentTarget.style.backgroundColor = WA.sidebarItem; }}
         onMouseLeave={e => { if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent'; }}
     >
         <div className="relative flex-shrink-0">
             <img src={PAGE_AVATAR} alt={PAGE_NAME} className="w-12 h-12 rounded-full object-cover" />
-            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2" style={{ backgroundColor: WA.greenLight, borderColor: WA.sidebarBg }} />
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white"
+                style={{ backgroundColor: '#31A24C' }} />
         </div>
         <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-                <p className="text-sm font-medium truncate" style={{ color: WA.textPrimary }}>{PAGE_NAME}</p>
+                <p className="text-sm font-semibold truncate" style={{ color: WA.textPrimary }}>{PAGE_NAME}</p>
                 <span className="text-[11px]" style={{ color: WA.textSecond }}>Test</span>
             </div>
-            <p className="text-xs truncate mt-0.5" style={{ color: WA.textSecond }}>Test API Meta</p>
+            <p className="text-xs truncate mt-0.5 font-medium" style={{ color: '#0084FF' }}>Test API Meta</p>
         </div>
     </button>
 );
 
 /* ─────────────────────────── Message Bubble ─────────────────────── */
 const MessageBubble = ({ msg, isClient }) => (
-    <div className={`flex w-full mb-1 ${isClient ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex w-full mb-1 items-end gap-2 ${isClient ? 'justify-end' : 'justify-start'}`}>
+        {!isClient && (
+            <img src={PAGE_AVATAR} alt="bot" className="w-7 h-7 rounded-full object-cover flex-shrink-0 mb-1" />
+        )}
         <div
-            className="relative max-w-[65%] rounded-lg px-3 py-2 shadow-sm"
+            className="relative max-w-[65%] px-3 py-2"
             style={{
                 backgroundColor: isClient ? WA.sentBubble : WA.recvBubble,
-                borderRadius: isClient ? '8px 8px 2px 8px' : '8px 8px 8px 2px',
+                borderRadius: isClient ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
             }}
         >
             {msg.type === 'text' && (
-                <p className="text-sm leading-snug pr-12" style={{ color: WA.textPrimary }}>{msg.content}</p>
+                <p className="text-sm leading-snug" style={{ color: isClient ? '#FFFFFF' : WA.textPrimary }}>{msg.content}</p>
             )}
             {msg.type === 'image' && (
-                <img src={msg.content} alt="Shared" className="max-w-full h-auto rounded-md max-h-64" />
+                <img src={msg.content} alt="Shared" className="max-w-full h-auto rounded-2xl max-h-64" />
             )}
             {msg.identifiedImageUrl && (
-                <div className="mt-2 pt-2" style={{ borderTop: `1px solid rgba(255,255,255,0.1)` }}>
-                    <p className="text-[10px] mb-1" style={{ color: WA.textSecond }}>Produit identifié :</p>
-                    <img src={msg.identifiedImageUrl} alt="Identified" className="max-w-full h-auto rounded-md max-h-32" />
+                <div className="mt-2 pt-2" style={{ borderTop: `1px solid rgba(0,0,0,0.08)` }}>
+                    <p className="text-[10px] mb-1" style={{ color: isClient ? 'rgba(255,255,255,0.7)' : WA.textSecond }}>Produit identifié :</p>
+                    <img src={msg.identifiedImageUrl} alt="Identified" className="max-w-full h-auto rounded-xl max-h-32" />
                 </div>
             )}
-            {/* Timestamp + ticks */}
-            <div className="flex items-center justify-end gap-1 mt-1">
-                <span className="text-[11px]" style={{ color: isClient ? '#8CABAA' : WA.textSecond }}>{msg.time}</span>
-                {isClient && (
-                    <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
-                        <path d="M1 5.5L5 9.5L15 1.5" stroke="#53BDEB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M5 5.5L9 9.5" stroke="#53BDEB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                )}
-            </div>
+            <span className="block text-right text-[10px] mt-0.5"
+                style={{ color: isClient ? 'rgba(255,255,255,0.65)' : WA.textSecond }}>
+                {msg.time}
+            </span>
         </div>
     </div>
 );
 
 /* ─────────────────────────── Typing Indicator ─────────────────────── */
 const TypingIndicator = () => (
-    <div className="flex justify-start mb-2">
-        <div className="px-4 py-2.5 rounded-lg shadow-sm" style={{ backgroundColor: WA.recvBubble, borderRadius: '8px 8px 8px 2px' }}>
+    <div className="flex justify-start items-end gap-2 mb-2">
+        <img src={PAGE_AVATAR} alt="bot" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
+        <div className="px-4 py-3" style={{ backgroundColor: WA.recvBubble, borderRadius: '18px 18px 18px 4px' }}>
             <div className="flex items-center gap-1">
                 <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: WA.textSecond, animationDelay: '0ms' }} />
                 <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: WA.textSecond, animationDelay: '150ms' }} />
@@ -291,32 +294,40 @@ const TestMetaSender = () => {
     };
 
     return (
-        <div className="flex h-screen w-full overflow-hidden" style={{ backgroundColor: WA.sidebarBg }}>
+        <div className="flex h-screen w-full overflow-hidden bg-white">
 
             {/* ── LEFT PANEL ── */}
-            <aside className="w-[320px] flex-shrink-0 flex flex-col" style={{ backgroundColor: WA.sidebarBg, borderRight: `1px solid ${WA.border}` }}>
-                {/* Sidebar header */}
-                <div className="flex items-center justify-between px-4 py-3" style={{ backgroundColor: WA.headerBg }}>
-                    <img src={PAGE_AVATAR} alt="You" className="w-10 h-10 rounded-full object-cover" />
-                    <div className="flex items-center gap-3">
-                        <MoreVertical className="w-5 h-5 cursor-pointer" style={{ color: WA.textSecond }} />
-                    </div>
+            <aside className="w-[320px] flex-shrink-0 flex flex-col" style={{ borderRight: `1px solid ${WA.border}` }}>
+
+                {/* Messenger gradient title */}
+                <div className="flex items-center justify-between px-4 pt-4 pb-2">
+                    <span className="text-2xl font-bold" style={{
+                        background: 'linear-gradient(135deg, #0084FF 0%, #A855F7 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                    }}>Messenger</span>
+                    <button className="w-9 h-9 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: WA.sidebarItem }}>
+                        <MoreVertical className="w-4 h-4" style={{ color: WA.textPrimary }} />
+                    </button>
                 </div>
+
                 {/* Search */}
-                <div className="px-3 py-2" style={{ backgroundColor: WA.sidebarBg }}>
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ backgroundColor: WA.searchBg }}>
+                <div className="px-3 py-2">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-full" style={{ backgroundColor: WA.searchBg }}>
                         <Search className="w-4 h-4 flex-shrink-0" style={{ color: WA.textSecond }} />
                         <input
                             type="text"
-                            placeholder="Rechercher ou commencer une nouvelle discussion"
-                            className="flex-1 text-sm bg-transparent border-0 focus:outline-none placeholder-opacity-60"
+                            placeholder="Rechercher dans Messenger"
+                            className="flex-1 text-sm bg-transparent border-0 focus:outline-none"
                             style={{ color: WA.textPrimary }}
-                            onFocus={e => e.target.style.caretColor = WA.green}
                         />
                     </div>
                 </div>
+
                 {/* Conversation list */}
-                <div className="flex-1 overflow-y-auto" style={{ borderTop: `1px solid ${WA.border}` }}>
+                <div className="flex-1 overflow-y-auto px-2 pt-1">
+                    <p className="text-[11px] font-semibold px-2 pb-1" style={{ color: WA.textSecond }}>Récents</p>
                     <ConversationItem isSelected={true} onClick={() => { }} />
                 </div>
             </aside>
@@ -325,51 +336,61 @@ const TestMetaSender = () => {
             <main className="flex-1 flex flex-col overflow-hidden min-w-0">
 
                 {/* Chat header */}
-                <div className="flex items-center justify-between px-4 py-2 flex-shrink-0" style={{ backgroundColor: WA.headerBg }}>
+                <div className="flex items-center justify-between px-4 py-2 flex-shrink-0"
+                    style={{ borderBottom: `1px solid ${WA.border}` }}>
                     <div className="flex items-center gap-3">
-                        <img src={PAGE_AVATAR} alt={PAGE_NAME} className="w-10 h-10 rounded-full object-cover" />
+                        <div className="relative">
+                            <img src={PAGE_AVATAR} alt={PAGE_NAME} className="w-10 h-10 rounded-full object-cover" />
+                            <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white"
+                                style={{ backgroundColor: '#31A24C' }} />
+                        </div>
                         <div>
                             <p className="font-semibold text-sm" style={{ color: WA.textPrimary }}>{PAGE_NAME}</p>
-                            <p className="text-xs" style={{ color: WA.green }}>
-                                {isLoading ? 'en train d\'écrire...' : 'en ligne'}
+                            <p className="text-xs font-medium" style={{ color: isLoading ? '#0084FF' : '#31A24C' }}>
+                                {isLoading ? 'En train d\'écrire...' : 'Actif maintenant'}
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
-                        <Video className="w-5 h-5 cursor-pointer" style={{ color: WA.textSecond }} />
-                        <Phone className="w-5 h-5 cursor-pointer" style={{ color: WA.textSecond }} />
+                    <div className="flex items-center gap-1">
+                        <button className="w-9 h-9 rounded-full flex items-center justify-center"
+                            style={{ backgroundColor: WA.sidebarItem }}>
+                            <Phone className="w-4 h-4" style={{ color: '#0084FF' }} />
+                        </button>
+                        <button className="w-9 h-9 rounded-full flex items-center justify-center"
+                            style={{ backgroundColor: WA.sidebarItem }}>
+                            <Video className="w-4 h-4" style={{ color: '#0084FF' }} />
+                        </button>
                         <button
                             onClick={() => setShowDebug((v) => !v)}
-                            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-opacity hover:opacity-80"
-                            style={{ backgroundColor: showDebug ? WA.green : WA.searchBg, color: showDebug ? '#fff' : WA.textSecond }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ml-1 transition-all"
+                            style={{
+                                background: showDebug
+                                    ? 'linear-gradient(135deg, #0084FF, #A855F7)'
+                                    : WA.sidebarItem,
+                                color: showDebug ? '#fff' : WA.textSecond,
+                            }}
                         >
-                            <ChevronRight className={`w-4 h-4 transition-transform ${showDebug ? 'rotate-180' : ''}`} />
+                            <ChevronRight className={`w-3.5 h-3.5 transition-transform ${showDebug ? 'rotate-180' : ''}`} />
                             Debug
                         </button>
-                        <MoreVertical className="w-5 h-5 cursor-pointer" style={{ color: WA.textSecond }} />
                     </div>
                 </div>
 
                 {/* User ID bar */}
-                <div className="flex items-center gap-2 px-4 py-1.5 flex-shrink-0" style={{ backgroundColor: WA.chatBg, borderBottom: `1px solid ${WA.border}` }}>
+                <div className="flex items-center gap-2 px-4 py-1.5 flex-shrink-0"
+                    style={{ backgroundColor: WA.sidebarItem, borderBottom: `1px solid ${WA.border}` }}>
                     <span className="text-xs font-medium flex-shrink-0" style={{ color: WA.textSecond }}>User ID :</span>
                     <input
                         type="text"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
-                        className="flex-1 text-xs border rounded px-2 py-1 font-mono focus:outline-none"
-                        style={{ backgroundColor: WA.searchBg, borderColor: WA.border, color: WA.textPrimary }}
+                        className="flex-1 text-xs border rounded-lg px-2 py-1 font-mono focus:outline-none"
+                        style={{ backgroundColor: WA.chatBg, borderColor: WA.border, color: WA.textPrimary }}
                     />
                 </div>
 
-                {/* Messages area — WA background */}
-                <div
-                    className="flex-1 overflow-y-auto px-6 py-4"
-                    style={{
-                        backgroundColor: WA.chatBg,
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30Z' fill='%23ffffff' fill-opacity='0.01'/%3E%3C/svg%3E")`,
-                    }}
-                >
+                {/* Messages area */}
+                <div className="flex-1 overflow-y-auto px-4 py-4" style={{ backgroundColor: WA.chatBg }}>
                     {messages.map((msg) => (
                         <MessageBubble key={msg.id} msg={msg} isClient={msg.sender === 'client'} />
                     ))}
@@ -377,15 +398,16 @@ const TestMetaSender = () => {
                     <div ref={messagesEndRef} />
                 </div>
 
-                {/* Image preview bar — shown when a file is selected */}
+                {/* Image preview bar */}
                 {imagePreview && (
-                    <div className="flex items-center gap-3 px-4 py-2 flex-shrink-0" style={{ backgroundColor: WA.inputBg, borderTop: `1px solid ${WA.border}` }}>
+                    <div className="flex items-center gap-3 px-4 py-2 flex-shrink-0"
+                        style={{ backgroundColor: WA.sidebarItem, borderTop: `1px solid ${WA.border}` }}>
                         <div className="relative flex-shrink-0">
-                            <img src={imagePreview} alt="preview" className="w-16 h-16 object-cover rounded-lg" />
+                            <img src={imagePreview} alt="preview" className="w-16 h-16 object-cover rounded-xl" />
                             <button
                                 onClick={() => clearImage()}
-                                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center"
-                                style={{ backgroundColor: WA.recvBubble, border: `2px solid ${WA.inputBg}` }}
+                                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center shadow"
+                                style={{ backgroundColor: '#fff', border: `1px solid ${WA.border}` }}
                             >
                                 <X className="w-2.5 h-2.5" style={{ color: WA.textPrimary }} />
                             </button>
@@ -395,7 +417,8 @@ const TestMetaSender = () => {
                 )}
 
                 {/* Input bar */}
-                <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0" style={{ backgroundColor: WA.inputBar }}>
+                <div className="flex items-center gap-2 px-3 py-3 flex-shrink-0"
+                    style={{ borderTop: `1px solid ${WA.border}` }}>
                     {/* Hidden file input */}
                     <input
                         ref={fileInputRef}
@@ -404,35 +427,37 @@ const TestMetaSender = () => {
                         className="hidden"
                         onChange={handleFileSelect}
                     />
-                    {/* Paperclip button triggers file picker */}
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="flex-shrink-0 transition-opacity hover:opacity-70"
+                        className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: imageFile ? '#E7F3FF' : WA.sidebarItem }}
                     >
-                        <Paperclip className="w-5 h-5" style={{ color: imageFile ? WA.green : WA.textSecond }} />
+                        <Paperclip className="w-4 h-4" style={{ color: imageFile ? '#0084FF' : WA.textSecond }} />
                     </button>
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder={imageFile ? 'Ajouter un message (optionnel)...' : 'Tapez un message'}
-                        disabled={isLoading}
-                        className="flex-1 text-sm rounded-lg px-4 py-2.5 border-0 focus:outline-none disabled:opacity-50"
-                        style={{ backgroundColor: WA.inputBg, color: WA.textPrimary }}
-                    />
+                    <div className="flex-1 flex items-center rounded-full px-4 py-2" style={{ backgroundColor: WA.inputBg }}>
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder={imageFile ? 'Ajouter un message...' : 'Aa'}
+                            disabled={isLoading}
+                            className="flex-1 text-sm bg-transparent border-0 focus:outline-none disabled:opacity-50"
+                            style={{ color: WA.textPrimary }}
+                        />
+                    </div>
                     <button
                         type="button"
                         onClick={handleSendMessage}
                         disabled={isLoading || (!input.trim() && !imageFile)}
-                        className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-opacity disabled:opacity-40 hover:opacity-80"
-                        style={{ backgroundColor: WA.green }}
+                        className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-opacity disabled:opacity-40"
+                        style={{ background: 'linear-gradient(135deg, #0084FF, #A855F7)' }}
                     >
                         {isLoading
-                            ? <Loader className="w-5 h-5 text-white animate-spin" />
-                            : <Send className="w-5 h-5 text-white" />
+                            ? <Loader className="w-4 h-4 text-white animate-spin" />
+                            : <Send className="w-4 h-4 text-white" />
                         }
                     </button>
                 </div>
