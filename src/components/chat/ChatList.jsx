@@ -5,7 +5,7 @@ const ChatList = ({ chats, selectedChat, onSelectChat }) => {
     const [activeTab, setActiveTab] = useState('Recents');
 
     return (
-        <div className="w-full max-w-[340px] bg-white border-r border-gray-100 flex flex-col h-full flex-shrink-0 z-10 shadow-[2px_0_15px_-3px_rgba(0,0,0,0.02)] relative">
+        <div className="w-full max-w-[340px] bg-white border border-gray-100 shadow-sm rounded-2xl flex flex-col h-full flex-shrink-0 z-10 relative m-4 overflow-hidden">
             {/* Header */}
             <div className="p-6 pb-4 bg-white z-20">
                 <div className="flex items-center justify-between mb-6 text-[#1c1d22]">

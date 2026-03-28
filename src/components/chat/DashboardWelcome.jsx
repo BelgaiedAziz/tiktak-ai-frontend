@@ -24,20 +24,7 @@ const DashboardWelcome = ({ onStartChat }) => {
     return (
         <div className="flex-1 flex flex-col items-center w-full h-full bg-[#fcfcfc] overflow-y-auto overflow-x-hidden">
 
-            {/* Top Header Section housing Avatars and Action Bar */}
-            <div className="w-full flex items-center justify-between px-6 md:px-10 py-5 bg-white border-b border-gray-200 relative mb-2">
-
-                {/* Left spacer to keep avatars centered */}
-                <div className="flex-1 hidden lg:block"></div>
-
-                {/* Center Avatars Block */}
-
-
-                {/* Right Action Bar */}
-                <div className="flex-1 flex justify-end">
-                    <TopActionBar />
-                </div>
-            </div>
+            {/* Main Content Area - Redundant Topbar Removed */}
 
             {/* Main Content Area */}
             <div className="flex-1 w-full max-w-4xl flex flex-col justify-center px-6 pt-4 pb-8 min-h-[500px]">

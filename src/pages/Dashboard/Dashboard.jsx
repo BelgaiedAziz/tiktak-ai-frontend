@@ -7,14 +7,14 @@ import {
 } from 'lucide-react';
 
 /* ─── helpers ────────────────────────────────────────────────────── */
-const today = new Date().toLocaleDateString('fr-FR', {
+const today = new Date().toLocaleDateString('en-US', {
   weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
 });
 const greeting = () => {
   const h = new Date().getHours();
-  if (h < 12) return 'Bonjour';
-  if (h < 18) return 'Bon après-midi';
-  return 'Bonsoir';
+  if (h < 12) return 'Good Morning';
+  if (h < 18) return 'Good Afternoon';
+  return 'Good Evening';
 };
 
 /* ─── KPI data ───────────────────────────────────────────────────── */
@@ -24,40 +24,40 @@ const KPI = [
     value: '81',
     delta: '+12',
     up: true,
-    sub: 'vs hier',
+    sub: 'vs Yesterday',
     icon: <MessageSquare className="w-5 h-5" />,
     bg: 'bg-blue-50',
     text: 'text-blue-600',
     sparkline: [30, 45, 38, 60, 55, 72, 81],
   },
   {
-    label: 'Commandes générées',
+    label: 'Orders Generated',
     value: '42',
     delta: '+8',
     up: true,
-    sub: 'taux: 52%',
+    sub: 'Rate: 52%',
     icon: <ShoppingCart className="w-5 h-5" />,
     bg: 'bg-emerald-50',
     text: 'text-emerald-600',
     sparkline: [18, 22, 20, 30, 28, 35, 42],
   },
   {
-    label: "En attente d'agent",
+    label: 'Awaiting Agent',
     value: '3',
     delta: '-2',
     up: false,
-    sub: 'fallbacks actifs',
+    sub: 'Active fallbacks',
     icon: <Clock className="w-5 h-5" />,
     bg: 'bg-orange-50',
     text: 'text-orange-500',
     sparkline: [8, 5, 7, 4, 6, 5, 3],
   },
   {
-    label: "Taux d'automatisation",
+    label: 'Automation Rate',
     value: '96%',
     delta: '+2%',
     up: true,
-    sub: "4 fallbacks aujourd'hui",
+    sub: '4 fallbacks today',
     icon: <Zap className="w-5 h-5" />,
     bg: 'bg-violet-50',
     text: 'text-violet-600',
@@ -131,11 +131,11 @@ const PENDING_ORDERS = [
 ];
 
 const ACTIVITY = [
-  { id: 1, Icon: ShoppingCart, iconCls: 'bg-emerald-50 text-emerald-600', text: 'Alex a commandé 2 t-shirts rouge M',    time: '3 min',  state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
-  { id: 2, Icon: MessageSquare, iconCls: 'bg-yellow-50 text-yellow-600',  text: 'Sarra demande les délais de livraison', time: '8 min',  state: 'EN ATTENTE', cls: 'bg-yellow-50 text-yellow-700' },
-  { id: 3, Icon: AlertTriangle, iconCls: 'bg-red-50 text-red-500',        text: 'Youssef — fallback activé',             time: '14 min', state: 'FALLBACK',   cls: 'bg-red-50 text-red-600' },
-  { id: 4, Icon: CheckCircle,   iconCls: 'bg-emerald-50 text-emerald-600',text: 'Nour a confirmé la commande #1042',     time: '21 min', state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
-  { id: 5, Icon: ShoppingCart,  iconCls: 'bg-emerald-50 text-emerald-600',text: 'Amine a commandé 1 veste noire XL',     time: '35 min', state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
+  { id: 1, Icon: ShoppingCart, iconCls: 'bg-emerald-50 text-emerald-600', text: 'Alex ordered 2 red T-shirts M',    time: '3 min',  state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
+  { id: 2, Icon: MessageSquare, iconCls: 'bg-yellow-50 text-yellow-600',  text: 'Sarra is asking about delivery times', time: '8 min',  state: 'WAITING', cls: 'bg-yellow-50 text-yellow-700' },
+  { id: 3, Icon: AlertTriangle, iconCls: 'bg-red-50 text-red-500',        text: 'Youssef — fallback triggered',             time: '14 min', state: 'FALLBACK',   cls: 'bg-red-50 text-red-600' },
+  { id: 4, Icon: CheckCircle,   iconCls: 'bg-emerald-50 text-emerald-600',text: 'Nour confirmed order #1042',     time: '21 min', state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
+  { id: 5, Icon: ShoppingCart,  iconCls: 'bg-emerald-50 text-emerald-600',text: 'Amine ordered 1 black jacket XL',     time: '35 min', state: 'COMPLETED',  cls: 'bg-green-50 text-green-700' },
 ];
 
 const TOP_INTENTS = [
@@ -163,10 +163,10 @@ const Dashboard = () => (
       </div>
       <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm">
         <Activity className="w-4 h-4 text-emerald-500" />
-        <span className="text-sm font-medium text-gray-700">Bot</span>
+        <span className="text-sm font-medium text-gray-700">Bot Status</span>
         <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          Actif
+          Active
         </span>
       </div>
     </div>
@@ -182,14 +182,14 @@ const Dashboard = () => (
       {/* ── Left col (span 2) ── */}
       <div className="xl:col-span-2 flex flex-col gap-6">
 
-        {/* Volume par heure */}
+        {/* Conversation Volume */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="font-bold text-gray-800 text-sm">Volume de conversations</h3>
-              <p className="text-xs text-gray-400">Aujourd'hui — par heure</p>
+              <h3 className="font-bold text-gray-800 text-sm">Conversation Volume</h3>
+              <p className="text-xs text-gray-400">Today — hourly breakdown</p>
             </div>
-            <span className="text-xs bg-[#eef6f9] text-[#0f6885] font-semibold px-2.5 py-1 rounded-lg">81 total</span>
+            <span className="text-xs bg-[#eef6f9] text-[#0f6885] font-semibold px-2.5 py-1 rounded-lg">81 Total</span>
           </div>
           <div className="flex items-end gap-1.5 h-24">
             {HOURLY.map((item) => (
@@ -205,12 +205,12 @@ const Dashboard = () => (
           </div>
         </div>
 
-        {/* Commandes à confirmer */}
+        {/* Orders to confirm */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-orange-500" />
-              <h3 className="font-bold text-gray-800 text-sm">Commandes en attente de confirmation</h3>
+              <h3 className="font-bold text-gray-800 text-sm">Orders Awaiting Confirmation</h3>
             </div>
             <span className="bg-orange-100 text-orange-600 text-xs font-bold rounded-full px-2.5 py-0.5">{PENDING_ORDERS.length}</span>
           </div>
@@ -229,7 +229,7 @@ const Dashboard = () => (
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <span className="text-[11px] bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">{o.platform}</span>
                   <button className="flex items-center gap-1 px-3 py-1.5 bg-[#0f6885] text-white text-xs font-semibold rounded-lg hover:bg-[#0c5973] transition-colors shadow-sm">
-                    <CheckCircle className="w-3.5 h-3.5" /> Confirmer
+                    <CheckCircle className="w-3.5 h-3.5" /> Confirm
                   </button>
                 </div>
               </div>
@@ -237,15 +237,15 @@ const Dashboard = () => (
           </div>
         </div>
 
-        {/* Activité récente */}
+        {/* Recent activity */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-[#0f6885]" />
-              <h3 className="font-bold text-gray-800 text-sm">Activité récente</h3>
+              <h3 className="font-bold text-gray-800 text-sm">Recent Activity</h3>
             </div>
-            <a href="/messages" className="flex items-center gap-1 text-xs text-[#0f6885] font-semibold hover:underline">
-              Tout voir <ArrowRight className="w-3 h-3" />
+            <a href="/analytics" className="flex items-center gap-1 text-xs text-[#0f6885] font-semibold hover:underline">
+              View All <ArrowRight className="w-3 h-3" />
             </a>
           </div>
           <div className="divide-y divide-gray-50">
@@ -272,12 +272,12 @@ const Dashboard = () => (
         <div className="bg-gradient-to-br from-[#0f6885] to-[#0a4f66] rounded-2xl p-6 text-white shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <Zap className="w-4 h-4 text-white/80" />
-            <p className="text-sm font-semibold text-white/80">Automatisation</p>
+            <p className="text-sm font-semibold text-white/80">Automation</p>
           </div>
           <div className="flex items-end justify-between">
             <div>
               <p className="text-5xl font-extrabold tracking-tight">96<span className="text-2xl text-white/70">%</span></p>
-              <p className="text-xs text-white/60 mt-1">4 interactions humaines</p>
+              <p className="text-xs text-white/60 mt-1">4 human interventions</p>
             </div>
             <div className="relative w-16 h-16">
               <svg viewBox="0 0 36 36" className="rotate-[-90deg] w-full h-full">
@@ -295,7 +295,7 @@ const Dashboard = () => (
             </div>
             <div>
               <p className="text-2xl font-bold">42</p>
-              <p className="text-[11px] text-white/60">Commandes</p>
+              <p className="text-[11px] text-white/60">Orders</p>
             </div>
           </div>
         </div>
@@ -304,7 +304,7 @@ const Dashboard = () => (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100">
             <Bot className="w-4 h-4 text-[#0f6885]" />
-            <h3 className="font-bold text-gray-800 text-sm">Intents fréquents</h3>
+            <h3 className="font-bold text-gray-800 text-sm">Frequent Intents</h3>
           </div>
           <div className="px-6 py-4 space-y-4">
             {TOP_INTENTS.map((item) => (
@@ -321,11 +321,11 @@ const Dashboard = () => (
           </div>
         </div>
 
-        {/* Canaux */}
+        {/* Channels */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100">
             <Users className="w-4 h-4 text-[#0f6885]" />
-            <h3 className="font-bold text-gray-800 text-sm">Canaux</h3>
+            <h3 className="font-bold text-gray-800 text-sm">Channels</h3>
           </div>
           <div className="px-6 py-4 space-y-4">
             {CHANNELS.map((c) => (
