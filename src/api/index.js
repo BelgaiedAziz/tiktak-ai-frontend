@@ -1,22 +1,6 @@
-// API Index - Point d'entrée centralisé pour tous les services API
-// Cette structure permet d'organiser les imports de manière claire
+// API - Exports centralisés
+// Services
+export * from './services';
 
-// CRM Services (Conversations, Leads)
-export * from './crmApi';
-export * from './leadsApi';
-
-// Messenger/Meta API
-export * from './metaApi';
-
-// Bot Configuration
-export * from './botConfigService';
-
-// Templates
-export * from './templatesService';
-
-// Hooks
-export { useTemplates } from './useTemplates';
-export { useBotConfig } from './useBotConfig';
-
-// Types (via JSDoc)
-export * from '../types';
+// Hooks (redirection vers src/hooks)
+export { useTemplates, useBotConfig } from '../hooks';

@@ -1,0 +1,21 @@
+// Constantes applicatives
+export const RESPONSE_TYPES = {
+  GREETING: 'GREETING',
+  COMPLAINT: 'COMPLAINT',
+  RESPONSE: 'RESPONSE',
+  MISSING_ENTITY: 'MISSING_ENTITY',
+  OUT_OF_STOCK: 'OUT_OF_STOCK',
+  ORDER_CONFIRMATION: 'ORDER_CONFIRMATION',
+};
+
+export const LANGUAGES = {
+  AUTO: 'AUTO',
+  FR: 'FR',
+  AR: 'AR',
+  EN: 'EN',
+};
+
+export const PAGINATION = {
+  DEFAULT_PAGE_SIZE: 20,
+  MAX_PAGE_SIZE: 100,
+};
