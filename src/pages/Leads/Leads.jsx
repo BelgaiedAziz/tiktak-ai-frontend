@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { fetchLeads, updateLead, deleteLead } from '../../api/leadsApi';
 
-const SHOP_ID = '1LXybpj';
+const SHOP_ID = process.env.REACT_APP_SHOP_ID || '';
 
 /* ─── Platform badge ─────────────────────────────────────────────── */
 const PlatformBadge = ({ platformId }) => {
@@ -17,7 +17,7 @@ const PlatformBadge = ({ platformId }) => {
     return (
       <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
         <svg viewBox="0 0 16 16" className="w-3 h-3 fill-green-600" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 1C4.14 1 1 4.14 1 8c0 1.23.33 2.38.9 3.37L1 15l3.74-.87A7 7 0 1 0 8 1zm3.68 9.8c-.16.44-.93.86-1.28.9-.34.03-.35.26-2.2-.51C5.88 10.3 4.5 8 4.39 7.86c-.1-.14-.88-1.17-.88-2.23s.55-1.58.75-1.79c.2-.22.43-.27.57-.27h.41c.14 0 .31-.05.49.37.18.43.6 1.49.66 1.59.06.1.09.23.02.37-.07.14-.11.22-.22.34-.1.12-.22.27-.31.37-.1.1-.2.2-.09.4.12.2.53.87 1.13 1.4.77.68 1.42.89 1.63 1 .2.1.32.08.44-.05.11-.13.49-.57.62-.77.13-.2.26-.16.44-.1.18.06 1.14.54 1.34.64.2.1.32.15.37.23.05.08.05.47-.11.92z"/>
+          <path d="M8 1C4.14 1 1 4.14 1 8c0 1.23.33 2.38.9 3.37L1 15l3.74-.87A7 7 0 1 0 8 1zm3.68 9.8c-.16.44-.93.86-1.28.9-.34.03-.35.26-2.2-.51C5.88 10.3 4.5 8 4.39 7.86c-.1-.14-.88-1.17-.88-2.23s.55-1.58.75-1.79c.2-.22.43-.27.57-.27h.41c.14 0 .31-.05.49.37.18.43.6 1.49.66 1.59.06.1.09.23.02.37-.07.14-.11.22-.22.34-.1.12-.22.27-.31.37-.1.1-.2.2-.09.4.12.2.53.87 1.13 1.4.77.68 1.42.89 1.63 1 .2.1.32.08.44-.05.11-.13.49-.57.62-.77.13-.2.26-.16.44-.1.18.06 1.14.54 1.34.64.2.1.32.15.37.23.05.08.05.47-.11.92z" />
         </svg>
         WhatsApp
       </span>
@@ -47,15 +47,15 @@ const PlatformBadge = ({ platformId }) => {
 /* ─── Edit modal ─────────────────────────────────────────────────── */
 const EditModal = ({ lead, onClose, onSaved }) => {
   const [form, setForm] = useState({
-    name:         lead.name         || '',
+    name: lead.name || '',
     phone_number: lead.phone_number || '',
-    address:      lead.address      || '',
-    color:        lead.color        || '',
-    size:         lead.size         || '',
-    quantity:     lead.quantity     || '',
+    address: lead.address || '',
+    color: lead.color || '',
+    size: lead.size || '',
+    quantity: lead.quantity || '',
   });
   const [saving, setSaving] = useState(false);
-  const [error, setError]   = useState(null);
+  const [error, setError] = useState(null);
 
   const handle = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -73,12 +73,12 @@ const EditModal = ({ lead, onClose, onSaved }) => {
   };
 
   const fields = [
-    { name: 'name',         label: 'Nom',          icon: User,    type: 'text'   },
-    { name: 'phone_number', label: 'Téléphone',     icon: Phone,   type: 'text'   },
-    { name: 'address',      label: 'Adresse',       icon: MapPin,  type: 'text'   },
-    { name: 'color',        label: 'Couleur',       icon: Package, type: 'text'   },
-    { name: 'size',         label: 'Taille',        icon: Hash,    type: 'text'   },
-    { name: 'quantity',     label: 'Quantité',      icon: Hash,    type: 'number' },
+    { name: 'name', label: 'Nom', icon: User, type: 'text' },
+    { name: 'phone_number', label: 'Téléphone', icon: Phone, type: 'text' },
+    { name: 'address', label: 'Adresse', icon: MapPin, type: 'text' },
+    { name: 'color', label: 'Couleur', icon: Package, type: 'text' },
+    { name: 'size', label: 'Taille', icon: Hash, type: 'text' },
+    { name: 'quantity', label: 'Quantité', icon: Hash, type: 'number' },
   ];
 
   return (
@@ -202,15 +202,15 @@ const DeleteModal = ({ lead, onClose, onConfirm, deleting }) => {
 
 /* ─── Main page ──────────────────────────────────────────────────── */
 const Leads = () => {
-  const [leads,   setLeads]   = useState([]);
+  const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error,   setError]   = useState(null);
-  const [search,  setSearch]  = useState('');
-  const [page,    setPage]    = useState(1);
-  const [total,   setTotal]   = useState(0);
-  const [editing,  setEditing]  = useState(null);
-  const [toDelete,  setToDelete] = useState(null);
-  const [deleting,  setDeleting] = useState(false);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [editing, setEditing] = useState(null);
+  const [toDelete, setToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const PAGE_SIZE = 20;
   const totalPages = Math.ceil(total / PAGE_SIZE) || 1;
@@ -474,6 +474,18 @@ const Leads = () => {
                   {/* Product details */}
                   <td className="px-4 py-3">
                     <div className="space-y-0.5">
+                      {lead.product_id && (
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                          <span className="text-gray-400">ID produit:</span>
+                          <span className="font-mono text-[#0f6885]">{lead.product_id}</span>
+                        </div>
+                      )}
+                      {lead.variation_id && (
+                        <div className="flex items-center gap-1 text-xs text-gray-600">
+                          <span className="text-gray-400">Variation:</span>
+                          <span className="font-mono text-purple-600">{lead.variation_id}</span>
+                        </div>
+                      )}
                       {lead.color && (
                         <div className="flex items-center gap-1 text-xs text-gray-600">
                           <span className="text-gray-400">Couleur:</span> {lead.color}
@@ -489,7 +501,7 @@ const Leads = () => {
                           <span className="text-gray-400">Qté:</span> {lead.quantity}
                         </div>
                       )}
-                      {!lead.color && !lead.size && !lead.quantity && (
+                      {!lead.product_id && !lead.variation_id && !lead.color && !lead.size && !lead.quantity && (
                         <span className="text-xs text-gray-300">—</span>
                       )}
                     </div>
@@ -572,11 +584,10 @@ const Leads = () => {
                 <button
                   key={p}
                   onClick={() => setPage(p)}
-                  className={`w-7 h-7 rounded-lg text-xs font-semibold transition-colors ${
-                    p === page
-                      ? 'bg-[#0f6885] text-white'
-                      : 'text-gray-500 hover:bg-gray-100'
-                  }`}
+                  className={`w-7 h-7 rounded-lg text-xs font-semibold transition-colors ${p === page
+                    ? 'bg-[#0f6885] text-white'
+                    : 'text-gray-500 hover:bg-gray-100'
+                    }`}
                 >
                   {p}
                 </button>
