@@ -22,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "restructure": "node restructure.js"
+    "restructure": "node restructure.js",
+    "phase6": "node phase6-restructure.js"
   },
   "eslintConfig": {
     "extends": [
