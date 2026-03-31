@@ -17,3 +17,6 @@ export * from './templatesService';
 // Hooks
 export { useTemplates } from './useTemplates';
 export { useBotConfig } from './useBotConfig';
+
+// Types (via JSDoc)
+export * from '../types';
