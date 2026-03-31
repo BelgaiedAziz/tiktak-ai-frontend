@@ -1,42 +1,94 @@
-import React from 'react';
-import { NavLink, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MainLayout from '../../components/layout/MainLayout';
-import Greetings from './tabs/Greetings';
-import AIPersonality from './tabs/AIPersonality';
-import Complaints from './tabs/Complaints';
-import Availability from './tabs/Availability';
-import ProductInfo from './tabs/ProductInfo';
-import OrderConfirmation from './tabs/OrderConfirmation';
-import OutOfStock from './tabs/OutOfStock';
-import Appearance from './tabs/Appearance';
+import BotConfiguration from './tabs/BotConfiguration';
+import ResponseIntent from './tabs/ResponseIntent';
+import MissingEntities from './tabs/MissingEntities';
 
 // Icons
 import {
   Settings as GenIcon,
-  MessageSquare as GreetIcon,
-  Sun as PersonIcon,
-  CheckSquare as ConfirmIcon,
-  AlertCircle as CompIcon,
-  Truck as DelIcon,
-  RefreshCcw as RefundIcon,
-  Ban as OOSIcon,
-  Image as AppIcon,
-  Info as InfoIcon,
-  Boxes as StockIcon
+  MessageCircle as ResponseIcon,
+  AlertCircle as MissingIcon,
+  ChevronDown,
+  ChevronRight,
+  Hand,
+  ShoppingCart,
+  Tag,
+  Package,
+  Truck,
+  XCircle,
+  HelpCircle,
+  Info,
 } from 'lucide-react';
 
-const navItems = [
-  { id: 'product_info', label: 'Product Info', icon: <InfoIcon className="w-4 h-4" />, path: 'product-info' },
-  { id: 'availability', label: 'Availability', icon: <StockIcon className="w-4 h-4" />, path: 'availability' },
-  { id: 'confirm', label: 'Order Flow', icon: <ConfirmIcon className="w-4 h-4" />, path: 'confirm' },
-  { id: 'greetings', label: 'Greetings', icon: <GreetIcon className="w-4 h-4" />, path: 'greetings' },
-  { id: 'personality', label: 'AI Personality', icon: <PersonIcon className="w-4 h-4" />, path: 'personality' },
-  { id: 'complaints', label: 'Complaints', icon: <CompIcon className="w-4 h-4" />, path: 'complaints' },
-  { id: 'oos', label: 'Out of Stock', icon: <OOSIcon className="w-4 h-4" />, path: 'oos' },
-  { id: 'appearance', label: 'Appearance', icon: <AppIcon className="w-4 h-4" />, path: 'appearance' },
+// Response intents configuration
+const responseIntents = [
+  { key: 'greeting', label: 'Greeting', Icon: Hand, vars: ['shop_name', 'ai_agent_name'] },
+  { key: 'order-product', label: 'Order Product', Icon: ShoppingCart, vars: ['product'] },
+  { key: 'ask-price', label: 'Ask Price', Icon: Tag, vars: ['product', 'price'] },
+  { key: 'ask-availability', label: 'Ask Availability', Icon: Package, vars: ['product'] },
+  { key: 'ask-delivery', label: 'Ask Delivery', Icon: Truck, vars: ['shop_name'] },
+  { key: 'cancel-order', label: 'Cancel Order', Icon: XCircle, vars: [] },
+  { key: 'unknown', label: 'Unknown Intent', Icon: HelpCircle, vars: [] },
+  { key: 'inform-info', label: 'Inform Info', Icon: Info, vars: [] },
 ];
 
+const navItems = [
+  { id: 'bot_config', label: 'Bot Configuration', icon: <GenIcon className="w-4 h-4" />, path: 'bot-configuration' },
+];
+
+// Reusable sidebar section with expand/collapse and sub-links
+const NavSection = ({ label, icon, basePath, subItems, location }) => {
+  const isActive = location.pathname.includes(basePath);
+  const [expanded, setExpanded] = useState(isActive);
+
+  return (
+    <div className="flex flex-col">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className={`
+          flex items-center justify-between gap-4 px-4 py-3.5 rounded-xl transition-all font-bold text-[15px]
+          ${isActive
+            ? 'bg-[#0f6885] text-white shadow-sm'
+            : 'text-gray-500 hover:text-[#0f6885] hover:bg-gray-50'
+          }
+        `}
+      >
+        <div className="flex items-center gap-4">
+          {icon}
+          <span>{label}</span>
+        </div>
+        {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+      </button>
+
+      {expanded && (
+        <div className="ml-8 mt-1 flex flex-col gap-1">
+          {subItems.map((item) => (
+            <NavLink
+              key={item.key}
+              to={`/settings/${basePath}/${item.key}`}
+              className={({ isActive }) => `
+                flex items-center gap-2.5 px-3.5 py-2 rounded-lg transition-all font-semibold text-[13px]
+                ${isActive
+                  ? 'bg-[#eef6f9] text-[#0f6885]'
+                  : 'text-gray-500 hover:text-[#0f6885] hover:bg-gray-50'
+                }
+              `}
+            >
+              {item.Icon && <item.Icon className="w-3.5 h-3.5 flex-shrink-0" />}
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const AgentSettingsLayout = () => {
+  const location = useLocation();
+
   const sidebarContent = (
     <div className="h-full flex flex-col pt-5">
       <div className="px-6 mb-8 flex items-center justify-between">
@@ -44,14 +96,15 @@ const AgentSettingsLayout = () => {
       </div>
 
       <nav className="flex-1 w-full flex flex-col px-4 gap-1 overflow-y-auto">
+        {/* Static nav items */}
         {navItems.map((item) => (
           <NavLink
             key={item.id}
             to={`/settings/${item.path}`}
             className={({ isActive }) => `
               flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all font-bold text-[15px]
-              ${isActive 
-                ? 'bg-[#0f6885] text-white shadow-sm' 
+              ${isActive
+                ? 'bg-[#0f6885] text-white shadow-sm'
                 : 'text-gray-500 hover:text-[#0f6885] hover:bg-gray-50'
               }
             `}
@@ -60,6 +113,30 @@ const AgentSettingsLayout = () => {
             {item.label}
           </NavLink>
         ))}
+
+        {/* Responses section */}
+        <NavSection
+          label="Responses"
+          icon={<ResponseIcon className="w-4 h-4" />}
+          basePath="responses"
+          subItems={responseIntents}
+          location={location}
+        />
+
+        {/* Missing Entities — direct link, no sub-menu */}
+        <NavLink
+          to="/settings/missing-entities"
+          className={({ isActive }) => `
+            flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all font-bold text-[15px]
+            ${isActive
+              ? 'bg-[#0f6885] text-white shadow-sm'
+              : 'text-gray-500 hover:text-[#0f6885] hover:bg-gray-50'
+            }
+          `}
+        >
+          <MissingIcon className="w-4 h-4" />
+          Missing Entities
+        </NavLink>
       </nav>
     </div>
   );
@@ -69,15 +146,20 @@ const AgentSettingsLayout = () => {
       <div className="h-full flex flex-col bg-white">
         <div className="px-10 py-8 flex-1 overflow-y-auto">
           <Routes>
-            <Route path="/" element={<Navigate to="product-info" replace />} />
-            <Route path="product-info" element={<ProductInfo />} />
-            <Route path="availability" element={<Availability />} />
-            <Route path="confirm" element={<OrderConfirmation />} />
-            <Route path="greetings" element={<Greetings />} />
-            <Route path="personality" element={<AIPersonality />} />
-            <Route path="complaints" element={<Complaints />} />
-            <Route path="oos" element={<OutOfStock />} />
-            <Route path="appearance" element={<Appearance />} />
+            <Route path="/" element={<Navigate to="bot-configuration" replace />} />
+            <Route path="bot-configuration" element={<BotConfiguration />} />
+
+            {/* Response intent routes */}
+            {responseIntents.map(intent => (
+              <Route
+                key={intent.key}
+                path={`responses/${intent.key}`}
+                element={<ResponseIntent intentKey={intent.key} intentConfig={intent} />}
+              />
+            ))}
+
+            {/* Missing Entities route */}
+            <Route path="missing-entities" element={<MissingEntities />} />
           </Routes>
         </div>
       </div>

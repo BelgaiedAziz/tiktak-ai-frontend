@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, BarChart2, User, Calendar, Zap, Bell, Settings, Database, MessageSquare } from 'lucide-react';
+import { Home, BarChart2, User, Calendar, Zap, Bell, Settings, Database, MessageSquare, MessageCircle, Users } from 'lucide-react';
 
 const navCls = ({ isActive }) =>
   `p-3 rounded-2xl transition-colors mb-2 ${isActive
@@ -21,11 +21,11 @@ const Sidebar = () => {
         <NavLink to="/" end className={navCls} title="Dashboard">
           <Home className="w-5 h-5" />
         </NavLink>
-        <NavLink to="/inbox" className={navCls} title="Inbox">
-          <MessageSquare className="w-5 h-5" />
+        <NavLink to="/messenger" className={navCls} title="Messenger">
+          <MessageCircle className="w-5 h-5" />
         </NavLink>
-        <NavLink to="/analytics" className={navCls} title="Analytics">
-          <BarChart2 className="w-5 h-5" />
+        <NavLink to="/leads" className={navCls} title="Leads">
+          <Users className="w-5 h-5" />
         </NavLink>
       </nav>
 
@@ -34,7 +34,7 @@ const Sidebar = () => {
         <NavLink to="/settings" className={navCls} title="Settings">
           <Settings className="w-5 h-5" />
         </NavLink>
-        
+
         {/* Avatar Placeholder */}
         <button className="mt-4 rounded-full overflow-hidden w-9 h-9 border-2 border-white focus:outline-none focus:ring-2 focus:ring-[#0f6885]">
           <img src="https://i.pravatar.cc/150?img=47" alt="User Profile" className="w-full h-full object-cover" />
