@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, Save, RotateCcw, Lock } from 'lucide-react';
-import { useTemplates } from '../../../api/useTemplates';
+import { useTemplates } from '../../../hooks/useTemplates';
 import DynamicTemplate from './DynamicTemplate';
 import CustomToggle from './CustomToggle';
-import Toast from '../../../components/Toast';
+import Toast from '../../../components/ui/Toast';
 
 /**
  * TemplateEditor - Composant réutilisable pour gérer les templates.

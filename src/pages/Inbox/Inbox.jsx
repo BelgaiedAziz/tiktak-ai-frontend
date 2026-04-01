@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ChatList from '../../components/chat/ChatList';
-import DashboardWelcome from '../../components/chat/DashboardWelcome';
+import DashboardWelcome from '../../components/dashboard/DashboardWelcome';
 import ActiveChat from '../../components/chat/ActiveChat';
 
 const Inbox = () => {

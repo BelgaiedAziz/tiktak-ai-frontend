@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Loader2, Save } from 'lucide-react';
-import { useBotConfig } from '../../../api/useBotConfig';
-import Toast from '../../../components/Toast';
+import { useBotConfig } from '../../../hooks/useBotConfig';
+import Toast from '../../../components/ui/Toast';
 
 const BotConfiguration = () => {
   const shopId = process.env.REACT_APP_SHOP_ID || '1LXybpj';
   const token = process.env.REACT_APP_SHOP_TOKEN;
-  
+
   const { config, loading, error, patchConfig } = useBotConfig(shopId, token);
-  
+
   const [formData, setFormData] = useState({
     shop_name: '',
     ai_agent_name: '',
     language: 'AUTO'
   });
-  
+
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState(null);
 
@@ -35,11 +35,11 @@ const BotConfiguration = () => {
   const handleSave = async () => {
     setIsSaving(true);
     setToast(null);
-    
+
     const result = await patchConfig(formData);
-    
+
     setIsSaving(false);
-    
+
     if (result.success) {
       setToast({
         type: 'success',
@@ -109,7 +109,7 @@ const BotConfiguration = () => {
         <div className="flex flex-col gap-3">
           <label className="text-sm font-semibold text-gray-500">Shop Name</label>
           <div className="bg-[#f0f4f8] rounded-xl px-4 py-3 border border-transparent hover:border-gray-200 transition-all">
-            <input 
+            <input
               type="text"
               value={formData.shop_name}
               onChange={(e) => handleChange('shop_name', e.target.value)}
@@ -125,7 +125,7 @@ const BotConfiguration = () => {
         <div className="flex flex-col gap-3">
           <label className="text-sm font-semibold text-gray-500">AI Agent Name</label>
           <div className="bg-[#f0f4f8] rounded-xl px-4 py-3 border border-transparent hover:border-gray-200 transition-all">
-            <input 
+            <input
               type="text"
               value={formData.ai_agent_name}
               onChange={(e) => handleChange('ai_agent_name', e.target.value)}
@@ -166,7 +166,7 @@ const BotConfiguration = () => {
               </svg>
             </div>
           </div>
-          
+
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mt-2">
             <p className="text-sm text-blue-800 font-medium">
               💡 {selectedLanguage.description}
@@ -177,7 +177,7 @@ const BotConfiguration = () => {
 
       {/* Save Button */}
       <div className="flex justify-end mt-6">
-        <button 
+        <button
           onClick={handleSave}
           disabled={isSaving || loading}
           className="bg-[#0f6885] hover:bg-[#0d5a74] disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-bold py-3 px-8 rounded-xl flex items-center gap-2 shadow-sm transition-all active:scale-95"

@@ -3,9 +3,9 @@ import {
   Search, RefreshCw, Loader, Trash2, Edit3, X, Save,
   ChevronLeft, ChevronRight, User, Package, Phone,
   MapPin, Hash, CheckCircle, Clock, AlertCircle,
-  Users, SearchX, WifiOff, ShoppingBag, Tag
+  Users, SearchX, WifiOff, Tag
 } from 'lucide-react';
-import { fetchLeads, updateLead, deleteLead } from '../../api/leadsApi';
+import { fetchLeads, patchLead as updateLead, deleteLead } from '../../api/crmApi';
 
 const SHOP_ID = process.env.REACT_APP_SHOP_ID || '';
 
