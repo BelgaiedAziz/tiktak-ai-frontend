@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, BarChart2, User, Calendar, Zap, Bell, Settings, Database, MessageSquare, MessageCircle, Users } from 'lucide-react';
+import { Home, Settings, MessageCircle, Users } from 'lucide-react';
 
 const navCls = ({ isActive }) =>
   `p-3 rounded-2xl transition-colors mb-2 ${isActive

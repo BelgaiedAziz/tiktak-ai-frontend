@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Lightbulb, Layers, MessageSquare, Camera, Smile, Mic, Send } from 'lucide-react';
-import TopActionBar from '../chat/TopActionBar';
 import logoTiktak from '../../assets/images/logoTiktak.png';
 
 const DashboardWelcome = ({ onStartChat }) => {

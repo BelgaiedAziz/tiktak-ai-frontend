@@ -65,14 +65,6 @@ const MsgBubble = ({ msg, leadName }) => {
         );
     }
 
-    // Client → gauche, bulle blanche avec avatar initiales
-    const initial = (
-        leadName ||
-        msg.sender_name ||
-        msg.user_name ||
-        '?'
-    )[0].toUpperCase();
-
     // Detect any URL — strip trailing brackets/punctuation added by Facebook webhook format
     const imageUrl = text ? text.match(/https?:\/\/[^\s\][\\"'<>)]+/i)?.[0] : null;
     const pureText = imageUrl ? text.replace(imageUrl, '').replace(/^\s*[\][]?\s*\[Image[^\]]*\]?/i, '').trim() : text;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Loader2, Save, RotateCcw, Lock } from 'lucide-react';
+import { Loader2, RotateCcw, Lock } from 'lucide-react';
 import { useTemplates } from '../../../hooks/useTemplates';
 import DynamicTemplate from './DynamicTemplate';
 import CustomToggle from './CustomToggle';

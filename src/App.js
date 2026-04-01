@@ -1,10 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/layout/Sidebar';
-import Navbar from './components/layout/Navbar';
 import MainLayout from './components/layout/MainLayout';
 import Dashboard from './pages/Dashboard/Dashboard';
-import Analytics from './pages/Analytics/Analytics';
 import Inbox from './pages/Inbox/Inbox';
 import ClientChat from './pages/ClientChat/ClientChat';
 import AgentSettingsLayout from './pages/AgentSettings/AgentSettingsLayout';
