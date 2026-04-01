@@ -6,32 +6,7 @@ import MessageBubble from './MessageBubble';
 const ActiveChat = ({ chat, onUpdateChat }) => {
 
     // Initialize state with default mock messages
-    const defaultMessages = [
-        {
-            id: 1,
-            sender: 'user',
-            text: 'Salem svp nheb nchouf el sbedri malbous reel wala video kn andek bellehi',
-            time: '12:25'
-        },
-        {
-            id: 2,
-            sender: 'ai',
-            text: 'Hello! I\'m your personal AI Assistant. Comment puis-je vous aider aujourd\'hui?',
-            time: '12:25'
-        },
-        {
-            id: 3,
-            sender: 'ai',
-            text: 'Voici une description de l\'article que vous cherchez : Basket noir taille 42 en stock.',
-            time: '12:26'
-        },
-        {
-            id: 4,
-            sender: 'user',
-            text: 'nheb naadi commande mela fl article hetha 42 taille w couleur noir aychek',
-            time: '12:27'
-        }
-    ];
+    const defaultMessages = [];
 
     // Check if we are opening a brand new chat spawned from the Dashboard
     const initialMessages = chat?.initialMessageText ? [
@@ -59,18 +34,7 @@ const ActiveChat = ({ chat, onUpdateChat }) => {
                 }
             ]);
 
-            // Simulate AI reply to the first message immediately
-            setTimeout(() => {
-                const now = new Date();
-                const aiTimeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                setMessages(prev => [...prev, {
-                    id: Date.now(),
-                    sender: 'ai',
-                    text: "Bonjour ! J'ai bien reçu votre message. Comment puis-je vous assister ?",
-                    time: aiTimeString
-                }]);
-            }, 1000);
-
+            // Readiness for backend population via webhook integration
         } else {
             setMessages(defaultMessages);
         }
@@ -108,27 +72,16 @@ const ActiveChat = ({ chat, onUpdateChat }) => {
             onUpdateChat(chat.id, text, timeString);
         }
 
-        // Mock an AI response after a short delay for demonstration
-        setTimeout(() => {
-            const aiResponseTime = new Date();
-            const aiTimeString = `${aiResponseTime.getHours().toString().padStart(2, '0')}:${aiResponseTime.getMinutes().toString().padStart(2, '0')}`;
-
-            setMessages(prev => [...prev, {
-                id: Date.now() + 1,
-                sender: 'ai',
-                text: "C'est noté ! Je transmets votre demande à notre équipe. Avez-vous besoin d'autre chose ?",
-                time: aiTimeString
-            }]);
-        }, 1500);
+        // Signal update to parent for backend parity
+        if (onUpdateChat) {
+            onUpdateChat(chat.id, text, timeString);
+        }
     };
 
     return (
-        <div className="flex-1 flex flex-col relative w-full h-full bg-[#fcfcfc] overflow-hidden">
+        <div className="flex-1 flex flex-col relative w-full h-full bg-white border border-gray-100 shadow-sm rounded-2xl m-4 overflow-hidden">
 
-            {/* Top Header section mirroring the dashboard padding */}
-            <div className="w-full flex justify-end px-6 md:px-10 py-6 border-b border-gray-100 bg-white shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] z-20">
-                <TopActionBar />
-            </div>
+            {/* Main content Area - Redundant Topbar Removed */}
 
             {/* Messages area wrapper. 
           Use overflow-y-auto here to push the input down only to the bottom of the container,

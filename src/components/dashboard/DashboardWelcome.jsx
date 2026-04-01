@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Lightbulb, Layers, MessageSquare, Camera, Smile, Mic, Send } from 'lucide-react';
-import TopActionBar from './TopActionBar';
 import logoTiktak from '../../assets/images/logoTiktak.png';
 
 const DashboardWelcome = ({ onStartChat }) => {
@@ -24,27 +23,12 @@ const DashboardWelcome = ({ onStartChat }) => {
     return (
         <div className="flex-1 flex flex-col items-center w-full h-full bg-[#fcfcfc] overflow-y-auto overflow-x-hidden">
 
-            {/* Top Header Section housing Avatars and Action Bar */}
-            <div className="w-full flex items-center justify-between px-6 md:px-10 py-5 bg-white border-b border-gray-200 relative mb-2">
-
-                {/* Left spacer to keep avatars centered */}
-                <div className="flex-1 hidden lg:block"></div>
-
-                {/* Center Avatars Block */}
-
-
-                {/* Right Action Bar */}
-                <div className="flex-1 flex justify-end">
-                    <TopActionBar />
-                </div>
-            </div>
-
             {/* Main Content Area */}
             <div className="flex-1 w-full max-w-4xl flex flex-col justify-center px-6 pt-4 pb-8 min-h-[500px]">
 
                 {/* Hero Text */}
                 <div className="text-center mb-10 mt-2">
-                    <h1 className="text-[34px] md:text-[42px] font-extrabold text-[#2a303a] mb-3 tracking-tight drop-shadow-sm">AI & Human Expertise</h1>
+                    <h1 className="text-[34px] md:text-[42px] font-extrabold text-[#2a303a] mb-3 tracking-tight drop-shadow-sm">AI &amp; Human Expertise</h1>
                     <p className="text-gray-500 text-[16px] md:text-lg tracking-wide font-medium">
                         Get instant answers with AI support and human expertise when needed.
                     </p>
